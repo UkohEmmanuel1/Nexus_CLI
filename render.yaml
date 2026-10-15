@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: nexus-cli-forge-ai
+    runtime: docker
+    plan: free
+    envVars:
+      - key: HF_TOKEN
+        sync: false
+      - key: AGENT_API_KEY
+        sync: false
+      - key: HF_MODEL
+        value: deepseek-ai/DeepSeek-V4-Pro:novita
