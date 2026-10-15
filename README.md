@@ -1,44 +1,43 @@
-# Nexus CLI — Forge AI MVP
+# Nexus Forge — AI Engineering Workspace
 
-A preliminary AI production-engineering assistant powered by FastAPI and optional Hugging Face hosted inference.
+A Codex-inspired browser workspace and bring-your-own-key coding assistant. The dashboard offers a public GitHub repository explorer, file preview and conversational AI-generated plans or code suggestions.
 
-## Current features
-- Web dashboard for public GitHub repository analysis
-- `GET /health` health endpoint
-- `POST /api/analyze` engineering planning API
-- Optional DeepSeek model via Hugging Face Inference Providers
-- Docker and Render Blueprint deployment configuration
+**Current status: MVP v0.2.** No terminal execution, code writes, git commits, tests, PR automation or autonomous deployment yet. The Creative Studio is a planned second workspace.
 
-**Scope:** Reads repository metadata and file paths only. Does not execute shell commands, modify repositories, run tests, or create pull requests. Creative agent is planned, not implemented.
+## Features
+- Three-pane UI: file explorer, code preview, agent chat
+- Browse source files in **public** GitHub repositories
+- Settings → provider, model and API key
+- Providers: OpenAI, DeepSeek, Groq, OpenRouter, Hugging Face Inference, Gemini (OpenAI-compatible)
+- API keys remain in current browser tab memory; requests go through FastAPI to preconfigured provider URLs
+- Generate code suggestions using selected open file as context
+- Docker-ready FastAPI backend and Render deployment blueprint
 
-## Local setup
+## Run locally
 
 ```bash
+python -m venv .venv
+# Windows: .venv\\Scripts\\activate
+# Linux/macOS: source .venv/bin/activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-Open http://localhost:8000 and http://localhost:8000/docs.
+Open **http://localhost:8000**. API docs at **http://localhost:8000/docs**.
 
-## Environment variables
+## Start coding
+1. Open the app and enter a public GitHub repository such as `UkohEmmanuel1/Nexus_CLI`.
+2. Click the arrow to load the file tree; select a text file to preview it.
+3. Click **Settings** and choose your provider, model identifier and API key.
+4. In the agent pane, ask for a code change. Keep **Include open file** enabled to supply real source context.
+5. Review and manually apply generated code suggestions. This version cannot edit files directly.
 
-- `HF_TOKEN`: Hugging Face Inference Providers API token. Keep private.
-- `HF_MODEL`: Default `deepseek-ai/DeepSeek-V4-Pro:novita`.
-- `AGENT_API_KEY`: **Required when HF_TOKEN is configured**. A strong secret that clients send in the `X-API-Key` header. Never embed it in public client code.
+## Important security notes
+Keys are NOT saved in GitHub, cookies or localStorage, but they **are sent to this backend** so it can invoke your provider. Enter keys only in a deployment you control and trust; enable HTTPS, authentication, abuse prevention, request size/rate limits and cost controls before public beta. Providers may bill per token. Do not expose your API key in screenshots or logs.
 
-Without `HF_TOKEN`, the app runs in preview mode without paid model calls.
+For API chat, POST `/api/agent` with `repo`, `task`, `provider`, `model`, `api_key`, optional `files`, `history`, and `mode`. This BYOK prototype is not a production multi-tenant credential management system.
 
-## Deploy on Render
+## Hosting
+Deploy as a Render Blueprint from `render.yaml` or another Docker host. The blueprint requests a free instance, but free-tier eligibility varies. No model weights are downloaded; inference is provided by your chosen API provider.
 
-Create a new **Blueprint** from this repo and set the secrets in the Render dashboard. Confirm actual free plan availability and provider pricing before deploying. Render assigns the live hostname; this repository alone is not a live deployment.
-
-## API example
-
-```bash
-curl -X POST http://localhost:8000/api/analyze \
-  -H 'Content-Type: application/json' \
-  -H 'X-API-Key: YOUR_AGENT_API_KEY' \
-  -d '{"repo":"tiangolo/fastapi","task":"Identify likely CI/CD risks and plan verification"}'
-```
-
-Production TODO: authentication per user, rate limits, observability, secure repository source-code retrieval, sandboxed tool execution, approvals, tests, and pull requests. The browser demo asks for an API key only when needed; for a public commercial frontend use a secure authenticated backend session instead.
+See [ROADMAP.md](ROADMAP.md) for milestones toward full code execution, autonomous PRs, CI/CD repair and the Creative Agent.
