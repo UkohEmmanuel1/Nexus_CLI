@@ -1,0 +1,42 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b0d12"><title>Nexus Forge — AI Engineering Workspace</title><link rel="stylesheet" href="/assets/style.css"></head><body>
+<div class="app">
+<aside class="rail">
+  <a class="brand" href="/" aria-label="Nexus Forge"><span class="brandmark">◈</span><span>NEXUS <b>FORGE</b></span></a>
+  <div class="railhead">WORKSPACES</div>
+  <button class="railitem active" id="navCode"><span>⌘</span> Software Engineer</button>
+  <button class="railitem" id="navCreative"><span>✦</span> Creative Studio <small>soon</small></button>
+  <div class="railhead spaceTop">PROJECT</div>
+  <div class="repochip"><span class="repoIcon">⌁</span><div><strong id="repoName">No repository</strong><small id="repoStatus">Open a GitHub repository</small></div></div>
+  <div class="railhead spaceTop">NAVIGATION</div>
+  <button class="railitem" id="navSettings"><span>⚙</span> Settings</button>
+  <a class="railitem doclink" href="/docs" target="_blank" rel="noopener"><span>↗</span> API documentation</a>
+  <div class="railfoot"><span class="dot"></span> Forge MVP <span class="muted"> · Review-first mode</span></div>
+</aside>
+<div class="work">
+<header class="topbar"><div class="breadcrumbs"><span>Workspace</span><span class="slash">/</span><b id="currentView">Software Engineer</b></div><div class="topactions"><span id="connection" class="connection">● No model configured</span><button class="ghost" id="topSettings">⚙ &nbsp; Models & API</button></div></header>
+<div id="engineer" class="engineer">
+<section class="leftpane">
+  <div class="panetitle"><b>EXPLORER</b><button class="tiny" id="openRepoButton" title="Load repository">↻</button></div>
+  <div class="repoform"><label for="repository">GITHUB REPOSITORY</label><div class="repoentry"><input id="repository" value="UkohEmmanuel1/Nexus_CLI" placeholder="owner/repository"><button id="loadRepo" title="Open repository">→</button></div><div id="repoError" class="error"></div></div>
+  <div class="treehead"><span>FILES</span><span id="fileCount">0</span></div>
+  <div class="filetree" id="filetree"><div class="placeholder">Connect a public repository to browse its files.</div></div>
+  <div class="panefoot">Public GitHub repositories only</div>
+</section>
+<section class="centerpane">
+<div class="editorbar"><div class="tab"><span class="tabdot"></span><span id="filename">Welcome</span></div><span id="filemeta">Read-only preview</span></div>
+<div class="editorbody" id="editorbody"><div class="welcome"><div class="heroMark">◈</div><h1>Build with intent.<br><em>Ship with confidence.</em></h1><p>Your AI engineering workspace. Connect a repository, inspect a file, and tell your agent what to build.</p><div class="featuregrid"><div><span>⌘</span><b>Context-aware</b><small>Read actual repository files</small></div><div><span>✳</span><b>Bring your model</b><small>Choose an API and start coding</small></div><div><span>▤</span><b>Review-first</b><small>Inspect generated patches before applying</small></div></div><button class="primary" id="welcomeSettings">Configure AI model →</button></div></div>
+<div class="statusbar"><span>◉ Nexus Forge</span><span id="statusText">Ready</span><span>UTF-8</span></div>
+</section>
+<section class="chatpane">
+<div class="chatheader"><div><span class="spark">✦</span> <b>Agent</b><small>Software Engineering</small></div><button class="tiny" id="clearChat" title="Clear conversation">↺</button></div>
+<div class="agentconfig"><span>MODEL</span><strong id="activeModel">Not configured</strong><button id="changeModel" class="linkbutton">Change</button></div>
+<div class="messages" id="messages"><div class="assistant-message"><div class="avatar">✦</div><div class="bubble"><strong>Ready when you are.</strong><p>I can inspect selected files and draft changes. Connect a model in Settings to begin.</p></div></div></div>
+<div class="composerArea"><div class="modeRow"><label class="mode"><input type="checkbox" id="includeCurrent" checked> Include open file</label><select id="mode"><option value="code">Generate code</option><option value="plan">Plan task</option></select></div><div class="composer"><textarea id="prompt" rows="4" placeholder="Ask Forge to build a feature, fix a bug, or explain code..."></textarea><div class="composebottom"><span>Enter to send · Shift+Enter for newline</span><button id="send" aria-label="Send message">↑</button></div></div><div class="privacy">Suggestions only · No code execution or commits</div></div>
+</section>
+</div>
+<div id="creative" class="hidden coming"><div class="creativeicon">✦</div><h1>Creative Studio</h1><p>Design canvas, media timeline, asset manager and rendering agents are on the roadmap. Engineering is the active MVP.</p><button class="primary" id="backEngineer">Return to Software Engineer</button></div>
+</div>
+</div>
+<div class="overlay hidden" id="settingsOverlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modalhead"><div><div class="eyebrow">NEXUS FORGE / PREFERENCES</div><h2 id="settingsTitle">Model settings</h2><p>Bring your own model provider and start generating code.</p></div><button class="close" id="closeSettings" aria-label="Close settings">×</button></div>
+<div class="settingsgrid"><div class="configinfo"><span class="shield">♧</span><b>Your keys stay in this session</b><p>The API key is held only in this browser tab's memory, sent to this server per request, and forwarded to the selected provider. It is not saved to GitHub or local storage.</p><div class="notice">Only use this deployment on infrastructure you trust. Do not enter production keys into third-party instances. Provider usage may be billed.</div></div><form id="settingsForm"><label for="provider">AI PROVIDER</label><select id="provider"><option value="openai">OpenAI</option><option value="deepseek">DeepSeek</option><option value="groq">Groq</option><option value="openrouter">OpenRouter</option><option value="huggingface">Hugging Face Inference</option><option value="gemini">Google Gemini (OpenAI-compatible)</option></select><label for="model">MODEL IDENTIFIER</label><input id="model" required placeholder="Model name"><label for="apiKey">API KEY</label><div class="keyrow"><input id="apiKey" type="password" autocomplete="off" spellcheck="false" required placeholder="Enter your API key"><button type="button" id="toggleKey">Show</button></div><small class="help">For Hugging Face, use a fine-grained token with inference permission. Your selected provider may require credits.</small><div class="actions"><button type="button" class="secondary" id="disconnect">Disconnect</button><button type="submit" class="primary">Save for this session</button></div><div class="saved" id="savedMsg"></div></form></div></div></div>
+<script src="/assets/app.js" defer></script></body></html>
